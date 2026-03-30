@@ -124,9 +124,9 @@ function DoorFrame({
 
 /* ── Baseboard (걸레받이) ── */
 function Baseboard({ w, d, h, wallT }: { w: number; d: number; h: number; wallT: number }) {
-  const bh = 0.1; // baseboard height
-  const bd = 0.02; // baseboard depth (protrusion)
-  const color = '#e0d9d0';
+  const bh = 0.15; // baseboard height (15cm - visible)
+  const bd = 0.04; // baseboard depth (4cm protrusion)
+  const color = '#d5cec4'; // slightly darker than wall for contrast
   const inset = wallT / 2; // wall inner face offset
 
   return (
@@ -157,33 +157,82 @@ function Baseboard({ w, d, h, wallT }: { w: number; d: number; h: number; wallT:
 
 /* ── Crown Molding (크라운 몰딩) ── */
 function CrownMolding({ w, d, h, wallT }: { w: number; d: number; h: number; wallT: number }) {
-  const mh = 0.06; // molding height
-  const md = 0.03; // molding depth
+  const mh = 0.1; // molding height (10cm - visible from below)
+  const md = 0.05; // molding depth (5cm)
   const color = '#eae5de';
   const inset = wallT / 2;
 
   return (
     <group>
-      {/* North */}
-      <mesh position={[0, h - mh / 2, -d / 2 + inset + md / 2]}>
+      {/* North — position below ceiling (h - 0.05 is ceiling bottom) */}
+      <mesh position={[0, h - 0.05 - mh / 2, -d / 2 + inset + md / 2]}>
         <boxGeometry args={[w - wallT * 2, mh, md]} />
         <meshStandardMaterial color={color} roughness={0.6} />
       </mesh>
       {/* South */}
-      <mesh position={[0, h - mh / 2, d / 2 - inset - md / 2]}>
+      <mesh position={[0, h - 0.05 - mh / 2, d / 2 - inset - md / 2]}>
         <boxGeometry args={[w - wallT * 2, mh, md]} />
         <meshStandardMaterial color={color} roughness={0.6} />
       </mesh>
       {/* East */}
-      <mesh position={[w / 2 - inset - md / 2, h - mh / 2, 0]}>
+      <mesh position={[w / 2 - inset - md / 2, h - 0.05 - mh / 2, 0]}>
         <boxGeometry args={[md, mh, d - wallT * 2]} />
         <meshStandardMaterial color={color} roughness={0.6} />
       </mesh>
       {/* West */}
-      <mesh position={[-w / 2 + inset + md / 2, h - mh / 2, 0]}>
+      <mesh position={[-w / 2 + inset + md / 2, h - 0.05 - mh / 2, 0]}>
         <boxGeometry args={[md, mh, d - wallT * 2]} />
         <meshStandardMaterial color={color} roughness={0.6} />
       </mesh>
+    </group>
+  );
+}
+
+/* ── Ceiling Light Rail (천장 조명 레일) ── */
+function CeilingLightRail({ w, d, h }: { w: number; d: number; h: number }) {
+  const railH = 0.05; // rail thickness (5cm)
+  const railW = 0.06; // rail width (6cm)
+  const fixtureR = 0.06; // light fixture radius (6cm)
+  const fixtureH = 0.1; // light fixture height (10cm)
+  const railY = h - 0.12; // below ceiling and crown molding
+  const railColor = '#b0aba3';
+  const fixtureColor = '#2a2a2a';
+
+  // Place fixtures evenly along the rail
+  const count = Math.max(2, Math.floor(d / 4));
+  const spacing = (d - 2) / (count - 1);
+  const startZ = -d / 2 + 1;
+
+  return (
+    <group>
+      {/* Rail bar running along Z axis */}
+      <mesh position={[0, railY, 0]}>
+        <boxGeometry args={[railW, railH, d * 0.7]} />
+        <meshStandardMaterial color={railColor} metalness={0.4} roughness={0.3} />
+      </mesh>
+
+      {/* Light fixtures along the rail */}
+      {Array.from({ length: count }).map((_, i) => {
+        const z = startZ + i * spacing;
+        return (
+          <group key={i} position={[0, railY - fixtureH / 2, z]}>
+            {/* Fixture housing */}
+            <mesh>
+              <cylinderGeometry args={[fixtureR, fixtureR, fixtureH, 8]} />
+              <meshStandardMaterial color={fixtureColor} metalness={0.3} roughness={0.4} />
+            </mesh>
+            {/* Light cap (emissive bottom) */}
+            <mesh position={[0, -fixtureH / 2 - 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+              <circleGeometry args={[fixtureR * 0.8, 8]} />
+              <meshStandardMaterial
+                color="#ffffff"
+                emissive="#ffffff"
+                emissiveIntensity={0.5}
+              />
+            </mesh>
+          </group>
+        );
+      })}
     </group>
   );
 }
@@ -266,6 +315,7 @@ export default function Room({
       {/* Architectural trim */}
       <Baseboard w={w} d={d} h={h} wallT={t} />
       <CrownMolding w={w} d={d} h={h} wallT={t} />
+      <CeilingLightRail w={w} d={d} h={h} />
 
       {/* North wall (z = -d/2) */}
       {hasDoor('north') ? (
