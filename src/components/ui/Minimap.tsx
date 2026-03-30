@@ -1,7 +1,6 @@
-import { useRef, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
-import * as THREE from 'three';
+import { useRef, useEffect, useCallback } from 'react';
+import { useGalleryStore } from '../../stores/useGalleryStore';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const SCALE = 2.5;
 const MAP_W = 140;
@@ -18,11 +17,11 @@ const rooms = [
   { x: 0, z: 35.5, w: 16, d: 12, label: 'Contact' },
 ];
 
-const dirVec = new THREE.Vector3();
-
 export default function Minimap() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { camera } = useThree();
+  const rafRef = useRef<number>(0);
+  const isMobile = useIsMobile();
+  const displayScale = isMobile ? 1 : 1.5;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -31,11 +30,13 @@ export default function Minimap() {
     canvas.height = MAP_H;
   }, []);
 
-  useFrame(() => {
+  const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    const { cameraPos, cameraDir } = useGalleryStore.getState();
 
     ctx.clearRect(0, 0, MAP_W, MAP_H);
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -60,8 +61,8 @@ export default function Minimap() {
     });
 
     // Player dot
-    const px = (camera.position.x + OFFSET_X) * SCALE;
-    const py = (camera.position.z + OFFSET_Z) * SCALE;
+    const px = (cameraPos[0] + OFFSET_X) * SCALE;
+    const py = (cameraPos[2] + OFFSET_Z) * SCALE;
 
     ctx.fillStyle = '#ff4444';
     ctx.beginPath();
@@ -69,33 +70,35 @@ export default function Minimap() {
     ctx.fill();
 
     // Direction line
-    camera.getWorldDirection(dirVec);
     ctx.strokeStyle = '#ff4444';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(px, py);
-    ctx.lineTo(px + dirVec.x * 8, py + dirVec.z * 8);
+    ctx.lineTo(px + cameraDir[0] * 8, py + cameraDir[2] * 8);
     ctx.stroke();
-  });
+
+    rafRef.current = requestAnimationFrame(draw);
+  }, []);
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [draw]);
 
   return (
-    <Html
-      fullscreen
-      zIndexRange={[15, 15]}
-      style={{ pointerEvents: 'none' }}
-    >
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'fixed',
-          top: 16,
-          right: 16,
-          width: MAP_W,
-          height: MAP_H,
-          borderRadius: 8,
-          border: '1px solid rgba(255,255,255,0.15)',
-        }}
-      />
-    </Html>
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        top: 16,
+        right: 16,
+        width: MAP_W * displayScale,
+        height: MAP_H * displayScale,
+        borderRadius: 8,
+        border: '1px solid rgba(255,255,255,0.15)',
+        pointerEvents: 'none',
+        zIndex: 15,
+      }}
+    />
   );
 }

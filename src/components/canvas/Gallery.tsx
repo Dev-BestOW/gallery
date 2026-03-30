@@ -1,13 +1,16 @@
+import { useMemo } from 'react';
+import * as THREE from 'three';
+import { useFrame, useThree } from '@react-three/fiber';
 import Room from './Room';
 import Lighting from './Lighting';
 import RoomLighting from './RoomLighting';
 import { Sparkles } from '@react-three/drei';
+import { useGalleryStore } from '../../stores/useGalleryStore';
 import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
 import EntranceParticles from './EntranceParticles';
 import FloorGuide, { FloorArrow } from './FloorGuide';
-import Minimap from '../ui/Minimap';
 import { useProximityDetector } from '../../hooks/useProximity';
 import { useCameraFocus } from '../../hooks/useCameraFocus';
 import { useFootsteps } from '../../hooks/useFootsteps';
@@ -25,6 +28,21 @@ import portfolio from '../../data/portfolio';
   Wing B:   [0,0,22]    20x5x15  Z[14.5, 29.5]
   Wing D:   [0,0,35.5]  16x5x12  Z[29.5, 41.5]
 */
+
+function CameraTracker() {
+  const { camera } = useThree();
+  const setCameraPosDir = useGalleryStore((s) => s.setCameraPosDir);
+  const dirVec = useMemo(() => new THREE.Vector3(), []);
+
+  useFrame(() => {
+    camera.getWorldDirection(dirVec);
+    setCameraPosDir(
+      [camera.position.x, camera.position.y, camera.position.z],
+      [dirVec.x, dirVec.y, dirVec.z],
+    );
+  });
+  return null;
+}
 
 function SceneManager() {
   useProximityDetector();
@@ -93,6 +111,7 @@ export default function Gallery() {
       <Lighting />
       <Player />
       <SceneManager />
+      <CameraTracker />
 
       {/* ===== Entrance Hall ===== */}
       <Room position={[0, 0, 0]} size={[20, 5, 15]} doorways={['south']} />
@@ -149,8 +168,6 @@ export default function Gallery() {
       <RoomArtworks placements={contactPlacements} />
       <Sparkles position={[0, 2.5, 35.5]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#ffd9a0" />
 
-      {/* Minimap */}
-      <Minimap />
     </>
   );
 }
