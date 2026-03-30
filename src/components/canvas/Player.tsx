@@ -32,6 +32,7 @@ export default function Player() {
     if (!isMobile.current) return;
 
     const handleLook = (e: Event) => {
+      if (useGalleryStore.getState().isLocked) return;
       const { dx, dy } = (e as CustomEvent).detail;
       euler.current.setFromQuaternion(camera.quaternion);
       euler.current.y -= dx * 0.003;
