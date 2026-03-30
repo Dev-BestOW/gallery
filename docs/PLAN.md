@@ -109,14 +109,14 @@ interface Wing {
 
 ## Implementation Phases
 
-### Phase 1: Foundation (MVP)
+### Phase 1: Foundation (MVP) ✅
 - [x] Plan 작성
-- [ ] Vite + React + TypeScript 프로젝트 초기화
-- [ ] Three.js / R3F / drei / rapier 설치
-- [ ] 단일 Room 컴포넌트 (벽, 바닥, 천장)
-- [ ] Player 컴포넌트 (1인칭 이동 + 벽 충돌)
-- [ ] 기본 조명 (ambient + directional)
-- [ ] 포인터 락 + WASD 이동 동작 확인
+- [x] Vite + React + TypeScript 프로젝트 초기화
+- [x] Three.js / R3F / drei / rapier 설치
+- [x] 단일 Room 컴포넌트 (벽, 바닥, 천장)
+- [x] Player 컴포넌트 (1인칭 이동 + 벽 충돌)
+- [x] 기본 조명 (ambient + directional)
+- [x] 포인터 락 + WASD 이동 동작 확인
 
 ### Phase 2: Artwork System
 - [ ] ArtFrame 컴포넌트 (액자 + 이미지 + 플레이트)
