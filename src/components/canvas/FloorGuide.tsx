@@ -5,49 +5,63 @@ interface FloorGuideProps {
   from: [number, number, number];
   to: [number, number, number];
   color?: string;
-  dashed?: boolean;
 }
 
 export default function FloorGuide({
   from,
   to,
   color = '#555555',
-  dashed = true,
 }: FloorGuideProps) {
-  const points = useMemo(() => {
-    return [new THREE.Vector3(...from), new THREE.Vector3(...to)];
+  const { position, length, rotationY, stripWidth } = useMemo(() => {
+    const dx = to[0] - from[0];
+    const dz = to[2] - from[2];
+    const len = Math.sqrt(dx * dx + dz * dz);
+    const angle = Math.atan2(dx, dz);
+    return {
+      position: [
+        (from[0] + to[0]) / 2,
+        0.002, // flush with floor
+        (from[2] + to[2]) / 2,
+      ] as [number, number, number],
+      length: len,
+      rotationY: -angle,
+      stripWidth: 0.015,
+    };
   }, [from, to]);
 
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry().setFromPoints(points);
-    if (dashed) geo.computeBoundingSphere();
-    return geo;
-  }, [points, dashed]);
-
   return (
-    <line>
-      <primitive object={geometry} attach="geometry" />
-      {dashed ? (
-        <lineDashedMaterial
+    <group position={position} rotation={[0, rotationY, 0]}>
+      {/* Main LED strip */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[stripWidth, length]} />
+        <meshStandardMaterial
           color={color}
-          dashSize={0.3}
-          gapSize={0.2}
-          opacity={0.4}
+          emissive={color}
+          emissiveIntensity={0.6}
           transparent
+          opacity={0.7}
         />
-      ) : (
-        <lineBasicMaterial color={color} opacity={0.4} transparent />
-      )}
-    </line>
+      </mesh>
+      {/* Outer glow */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.0001, 0]}>
+        <planeGeometry args={[stripWidth * 6, length]} />
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={0.15}
+          transparent
+          opacity={0.25}
+        />
+      </mesh>
+    </group>
   );
 }
 
-// 화살표 마커
+// 방향 표시 — 바닥 매립 삼각형 (은은한 발광)
 interface FloorArrowProps {
   position: [number, number, number];
   rotation?: [number, number, number];
   color?: string;
-  label?: string;
 }
 
 export function FloorArrow({
@@ -55,17 +69,30 @@ export function FloorArrow({
   rotation = [0, 0, 0],
   color = '#666666',
 }: FloorArrowProps) {
+  const shape = useMemo(() => {
+    const s = new THREE.Shape();
+    // Flat chevron arrow pointing +Z
+    s.moveTo(0, 0.2);
+    s.lineTo(0.15, 0);
+    s.lineTo(0.05, 0);
+    s.lineTo(0.05, -0.15);
+    s.lineTo(-0.05, -0.15);
+    s.lineTo(-0.05, 0);
+    s.lineTo(-0.15, 0);
+    s.closePath();
+    return s;
+  }, []);
+
   return (
     <group position={position} rotation={rotation}>
-      {/* Arrow shape on floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <coneGeometry args={[0.3, 0.6, 3]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.002, 0]}>
+        <shapeGeometry args={[shape]} />
         <meshStandardMaterial
           color={color}
-          opacity={0.5}
-          transparent
           emissive={color}
-          emissiveIntensity={0.3}
+          emissiveIntensity={0.4}
+          transparent
+          opacity={0.5}
         />
       </mesh>
     </group>

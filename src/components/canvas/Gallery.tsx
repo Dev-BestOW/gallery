@@ -1,7 +1,7 @@
 import Room from './Room';
 import Lighting from './Lighting';
 import RoomLighting from './RoomLighting';
-import { Environment } from '@react-three/drei';
+import { Environment, Sparkles } from '@react-three/drei';
 import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
@@ -126,11 +126,13 @@ export default function Gallery() {
       <Room position={[-18, 0, 11]} size={[16, 5, 12]} doorways={['east']} />
       <RoomLighting position={[-18, 0, 11]} theme="warm" />
       <RoomArtworks placements={aboutPlacements} />
+      <Sparkles position={[-18, 2.5, 11]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#ffe4c4" />
 
       {/* ===== Wing B - Projects ===== */}
       <Room position={[0, 0, 22]} size={[20, 5, 15]} doorways={['north', 'south']} />
       <RoomLighting position={[0, 0, 22]} theme="cool" />
       <RoomArtworks placements={[...projectsEast, ...projectsWest]} />
+      <Sparkles position={[0, 2.5, 22]} count={15} scale={[18, 4, 13]} size={1.5} speed={0.2} opacity={0.15} color="#cce0ff" />
 
       {/* Wing B → Wing D (south) */}
       <FloorGuide from={[0, 0.02, 27]} to={[0, 0.02, 29]} />
@@ -140,11 +142,13 @@ export default function Gallery() {
       <Room position={[18, 0, 11]} size={[16, 5, 12]} doorways={['west']} />
       <RoomLighting position={[18, 0, 11]} theme="dark" />
       <RoomArtworks placements={careerPlacements} />
+      <Sparkles position={[18, 2.5, 11]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#e0d0ff" />
 
       {/* ===== Wing D - Contact ===== */}
       <Room position={[0, 0, 35.5]} size={[16, 5, 12]} doorways={['north']} />
       <RoomLighting position={[0, 0, 35.5]} theme="cozy" />
       <RoomArtworks placements={contactPlacements} />
+      <Sparkles position={[0, 2.5, 35.5]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#ffd9a0" />
 
       {/* Minimap */}
       <Minimap />
