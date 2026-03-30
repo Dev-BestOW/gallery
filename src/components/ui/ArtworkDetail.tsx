@@ -1,21 +1,33 @@
 import { useGalleryStore } from '../../stores/useGalleryStore';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+
+const isMobileDevice = () =>
+  'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 export default function ArtworkDetail() {
   const viewingArtwork = useGalleryStore((s) => s.viewingArtwork);
   const setViewingArtwork = useGalleryStore((s) => s.setViewingArtwork);
   const setIsLocked = useGalleryStore((s) => s.setIsLocked);
 
+  const closePanel = useCallback(() => {
+    setViewingArtwork(null);
+    setIsLocked(false);
+    if (!isMobileDevice()) {
+      setTimeout(() => {
+        document.querySelector('canvas')?.requestPointerLock();
+      }, 50);
+    }
+  }, [setViewingArtwork, setIsLocked]);
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && viewingArtwork) {
-        setViewingArtwork(null);
-        setIsLocked(false);
+        closePanel();
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [viewingArtwork, setViewingArtwork, setIsLocked]);
+  }, [viewingArtwork, closePanel]);
 
   if (!viewingArtwork) return null;
 
@@ -31,10 +43,7 @@ export default function ArtworkDetail() {
         zIndex: 200,
         cursor: 'pointer',
       }}
-      onClick={() => {
-        setViewingArtwork(null);
-        setIsLocked(false);
-      }}
+      onClick={closePanel}
     >
       <div
         style={{

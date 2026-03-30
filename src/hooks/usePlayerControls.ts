@@ -41,11 +41,19 @@ export function usePlayerControls() {
       if (key) setKeys((prev) => ({ ...prev, [key]: false }));
     };
 
+    const resetAll = () => {
+      setKeys({ forward: false, backward: false, left: false, right: false, sprint: false });
+    };
+
     window.addEventListener('keydown', handleDown);
     window.addEventListener('keyup', handleUp);
+    window.addEventListener('blur', resetAll);
+    document.addEventListener('pointerlockchange', resetAll);
     return () => {
       window.removeEventListener('keydown', handleDown);
       window.removeEventListener('keyup', handleUp);
+      window.removeEventListener('blur', resetAll);
+      document.removeEventListener('pointerlockchange', resetAll);
     };
   }, []);
 
