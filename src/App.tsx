@@ -5,13 +5,18 @@ import Gallery from './components/canvas/Gallery';
 import HUD from './components/ui/HUD';
 import ArtworkDetail from './components/ui/ArtworkDetail';
 import WelcomeScreen from './components/ui/WelcomeScreen';
+import MobileControls from './components/ui/MobileControls';
+import { useIsMobile } from './hooks/useIsMobile';
 
 export default function App() {
+  const isMobile = useIsMobile();
+
   return (
     <>
       <WelcomeScreen />
       <HUD />
       <ArtworkDetail />
+      {isMobile && <MobileControls />}
       <Canvas
         camera={{ fov: 70, near: 0.1, far: 200 }}
         dpr={[1, 1.5]}

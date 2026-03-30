@@ -3,6 +3,7 @@ import { useGalleryStore } from '../../stores/useGalleryStore';
 
 export default function HUD() {
   const isPointerLocked = useGalleryStore((s) => s.isPointerLocked);
+  const hasEntered = useGalleryStore((s) => s.hasEntered);
   const nearbyArtwork = useGalleryStore((s) => s.nearbyArtwork);
   const viewingArtwork = useGalleryStore((s) => s.viewingArtwork);
 
@@ -11,8 +12,12 @@ export default function HUD() {
     if (canvas) canvas.requestPointerLock();
   }, []);
 
-  // ESC로 포인터 락 해제 시: 재입장 안내 (WelcomeScreen과 별도)
-  if (!isPointerLocked && !viewingArtwork) {
+  // 입장 전이면 아무것도 표시하지 않음 (WelcomeScreen이 담당)
+  if (!hasEntered) return null;
+
+  // 데스크탑: ESC로 포인터 락 해제 시 재입장 안내
+  const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (!isMobile && !isPointerLocked && !viewingArtwork) {
     return (
       <div
         onClick={handleResume}
@@ -41,8 +46,8 @@ export default function HUD() {
 
   return (
     <>
-      {/* Crosshair */}
-      {isPointerLocked && (
+      {/* Crosshair (desktop only) */}
+      {!isMobile && isPointerLocked && (
         <div
           style={{
             position: 'fixed',
@@ -60,11 +65,11 @@ export default function HUD() {
       )}
 
       {/* Nearby artwork hint */}
-      {nearbyArtwork && isPointerLocked && (
+      {nearbyArtwork && !viewingArtwork && (
         <div
           style={{
             position: 'fixed',
-            bottom: '15%',
+            bottom: isMobile ? '25%' : '15%',
             left: '50%',
             transform: 'translateX(-50%)',
             padding: '10px 24px',
@@ -80,7 +85,7 @@ export default function HUD() {
         >
           <p style={{ fontWeight: 500 }}>{nearbyArtwork.title}</p>
           <p style={{ fontSize: '0.75rem', opacity: 0.7, marginTop: 4 }}>
-            클릭하여 감상하기
+            {isMobile ? '터치하여 감상하기' : '클릭하여 감상하기'}
           </p>
         </div>
       )}

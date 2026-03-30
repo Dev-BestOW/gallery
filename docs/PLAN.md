@@ -139,11 +139,11 @@ interface Wing {
 - [x] 페이드인/아웃 전환 효과
 - [x] 텍스처 개선 (바닥 metalness 반사, 벽 깔끔한 머티리얼)
 
-### Phase 5: Mobile & UX
-- [ ] 모바일 감지 + 가상 조이스틱
-- [ ] 터치 기반 작품 감상
-- [ ] 미니맵 HUD
-- [ ] 반응형 상세 패널
+### Phase 5: Mobile & UX ✅
+- [x] 모바일 감지 + 가상 조이스틱
+- [x] 터치 기반 시점 회전 + 작품 감상
+- [x] 미니맵 HUD (Canvas 내 Html 오버레이)
+- [x] 반응형 상세 패널
 
 ### Phase 6: Extra (Optional)
 - [ ] 발자국 사운드 효과

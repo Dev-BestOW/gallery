@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import type { RapierRigidBody } from '@react-three/rapier';
@@ -7,6 +7,7 @@ import { PointerLockControls } from '@react-three/drei';
 import { usePlayerControls } from '../../hooks/usePlayerControls';
 import { PLAYER } from '../../constants/gallery';
 import { useGalleryStore } from '../../stores/useGalleryStore';
+import { joystickState } from '../ui/MobileControls';
 
 export default function Player() {
   const rigidBodyRef = useRef<RapierRigidBody>(null);
@@ -14,20 +15,52 @@ export default function Player() {
   const { camera } = useThree();
   const keys = usePlayerControls();
   const isLocked = useGalleryStore((s) => s.isLocked);
+  const isFocusing = useGalleryStore((s) => s.isFocusing);
   const setIsPointerLocked = useGalleryStore((s) => s.setIsPointerLocked);
 
   const direction = useRef(new THREE.Vector3());
   const frontVector = useRef(new THREE.Vector3());
   const sideVector = useRef(new THREE.Vector3());
+  const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
+
+  const isMobile = useRef(
+    'ontouchstart' in window || navigator.maxTouchPoints > 0
+  );
+
+  // Mobile look: listen for custom event from MobileControls
+  useEffect(() => {
+    if (!isMobile.current) return;
+
+    const handleLook = (e: Event) => {
+      const { dx, dy } = (e as CustomEvent).detail;
+      euler.current.setFromQuaternion(camera.quaternion);
+      euler.current.y -= dx * 0.003;
+      euler.current.x -= dy * 0.003;
+      euler.current.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.current.x));
+      camera.quaternion.setFromEuler(euler.current);
+    };
+
+    window.addEventListener('mobile-look', handleLook);
+    return () => window.removeEventListener('mobile-look', handleLook);
+  }, [camera]);
 
   useFrame(() => {
-    if (!rigidBodyRef.current || isLocked) return;
+    if (!rigidBodyRef.current || isLocked || isFocusing) return;
 
     const speed = keys.sprint ? PLAYER.sprintSpeed : PLAYER.speed;
 
-    // 이동 방향 계산
-    frontVector.current.set(0, 0, (keys.backward ? 1 : 0) - (keys.forward ? 1 : 0));
-    sideVector.current.set((keys.left ? 1 : 0) - (keys.right ? 1 : 0), 0, 0);
+    // Keyboard input
+    let fz = (keys.backward ? 1 : 0) - (keys.forward ? 1 : 0);
+    let sx = (keys.left ? 1 : 0) - (keys.right ? 1 : 0);
+
+    // Mobile joystick input (override if active)
+    if (joystickState.active) {
+      sx = -joystickState.x;
+      fz = joystickState.y;
+    }
+
+    frontVector.current.set(0, 0, fz);
+    sideVector.current.set(sx, 0, 0);
 
     direction.current
       .subVectors(frontVector.current, sideVector.current)
@@ -35,14 +68,12 @@ export default function Player() {
       .multiplyScalar(speed)
       .applyEuler(camera.rotation);
 
-    // Y축 속도는 중력 유지
     const currentVel = rigidBodyRef.current.linvel();
     rigidBodyRef.current.setLinvel(
       { x: direction.current.x, y: currentVel.y, z: direction.current.z },
       true,
     );
 
-    // 카메라를 rigid body 위치로 동기화
     const pos = rigidBodyRef.current.translation();
     camera.position.set(pos.x, pos.y + PLAYER.height / 2, pos.z);
   });
@@ -60,11 +91,13 @@ export default function Player() {
       >
         <CapsuleCollider args={[PLAYER.height / 2 - PLAYER.radius, PLAYER.radius]} />
       </RigidBody>
-      <PointerLockControls
-        ref={controlsRef}
-        onLock={() => setIsPointerLocked(true)}
-        onUnlock={() => setIsPointerLocked(false)}
-      />
+      {!isMobile.current && (
+        <PointerLockControls
+          ref={controlsRef}
+          onLock={() => setIsPointerLocked(true)}
+          onUnlock={() => setIsPointerLocked(false)}
+        />
+      )}
     </>
   );
 }

@@ -1,23 +1,45 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useGalleryStore } from '../../stores/useGalleryStore';
 
+const isMobileDevice = () =>
+  'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 export default function WelcomeScreen() {
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
-  const isPointerLocked = useGalleryStore((s) => s.isPointerLocked);
+  const setHasEntered = useGalleryStore((s) => s.setHasEntered);
+  const setIsPointerLocked = useGalleryStore((s) => s.setIsPointerLocked);
+
+  const handleEnter = useCallback(() => {
+    if (isMobileDevice()) {
+      // 모바일: 포인터 락 없이 바로 입장
+      setHasEntered(true);
+      setIsPointerLocked(true); // 모바일에서는 항상 활성 상태로 취급
+    } else {
+      // 데스크탑: 포인터 락 요청
+      const canvas = document.querySelector('canvas');
+      if (canvas) canvas.requestPointerLock();
+    }
+    setFadeOut(true);
+  }, [setHasEntered, setIsPointerLocked]);
+
+  // 데스크탑: 포인터 락 성공 시 입장 처리
+  useEffect(() => {
+    const handleLockChange = () => {
+      if (document.pointerLockElement) {
+        setHasEntered(true);
+      }
+    };
+    document.addEventListener('pointerlockchange', handleLockChange);
+    return () => document.removeEventListener('pointerlockchange', handleLockChange);
+  }, [setHasEntered]);
 
   useEffect(() => {
-    if (isPointerLocked && visible) {
-      setFadeOut(true);
+    if (fadeOut) {
       const timer = setTimeout(() => setVisible(false), 800);
       return () => clearTimeout(timer);
     }
-  }, [isPointerLocked, visible]);
-
-  const handleEnter = useCallback(() => {
-    const canvas = document.querySelector('canvas');
-    if (canvas) canvas.requestPointerLock();
-  }, []);
+  }, [fadeOut]);
 
   if (!visible) return null;
 
@@ -38,7 +60,6 @@ export default function WelcomeScreen() {
       }}
     >
       <div style={{ textAlign: 'center', color: '#fff' }}>
-        {/* Title */}
         <div
           style={{
             fontSize: '0.75rem',
@@ -76,10 +97,9 @@ export default function WelcomeScreen() {
             fontWeight: 300,
           }}
         >
-          클릭하여 갤러리에 입장하세요
+          {isMobileDevice() ? '터치하여 갤러리에 입장하세요' : '클릭하여 갤러리에 입장하세요'}
         </p>
 
-        {/* Controls guide */}
         <div
           style={{
             display: 'inline-grid',
@@ -90,11 +110,21 @@ export default function WelcomeScreen() {
             textAlign: 'left',
           }}
         >
-          <span style={{ opacity: 0.7 }}>WASD</span><span>이동</span>
-          <span style={{ opacity: 0.7 }}>Mouse</span><span>둘러보기</span>
-          <span style={{ opacity: 0.7 }}>Shift</span><span>달리기</span>
-          <span style={{ opacity: 0.7 }}>Click</span><span>작품 감상</span>
-          <span style={{ opacity: 0.7 }}>ESC</span><span>메뉴</span>
+          {isMobileDevice() ? (
+            <>
+              <span style={{ opacity: 0.7 }}>좌측</span><span>조이스틱 이동</span>
+              <span style={{ opacity: 0.7 }}>우측</span><span>터치 둘러보기</span>
+              <span style={{ opacity: 0.7 }}>Tap</span><span>작품 감상</span>
+            </>
+          ) : (
+            <>
+              <span style={{ opacity: 0.7 }}>WASD</span><span>이동</span>
+              <span style={{ opacity: 0.7 }}>Mouse</span><span>둘러보기</span>
+              <span style={{ opacity: 0.7 }}>Shift</span><span>달리기</span>
+              <span style={{ opacity: 0.7 }}>Click</span><span>작품 감상</span>
+              <span style={{ opacity: 0.7 }}>ESC</span><span>메뉴</span>
+            </>
+          )}
         </div>
       </div>
     </div>

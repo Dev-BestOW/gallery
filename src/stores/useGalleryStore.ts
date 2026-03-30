@@ -22,6 +22,10 @@ interface GalleryState {
   isFocusing: boolean;
   setIsFocusing: (focusing: boolean) => void;
 
+  // 갤러리 입장 여부
+  hasEntered: boolean;
+  setHasEntered: (entered: boolean) => void;
+
   isLocked: boolean;
   setIsLocked: (locked: boolean) => void;
 
@@ -43,6 +47,9 @@ export const useGalleryStore = create<GalleryState>((set) => ({
   setCameraTarget: (target) => set({ cameraTarget: target }),
   isFocusing: false,
   setIsFocusing: (focusing) => set({ isFocusing: focusing }),
+
+  hasEntered: false,
+  setHasEntered: (entered) => set({ hasEntered: entered }),
 
   isLocked: false,
   setIsLocked: (locked) => set({ isLocked: locked }),

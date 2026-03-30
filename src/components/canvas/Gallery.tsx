@@ -5,6 +5,7 @@ import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
 import FloorGuide, { FloorArrow } from './FloorGuide';
+import Minimap from '../ui/Minimap';
 import { useProximityDetector } from '../../hooks/useProximity';
 import { useCameraFocus } from '../../hooks/useCameraFocus';
 import portfolio from '../../data/portfolio';
@@ -123,6 +124,9 @@ export default function Gallery() {
       <Room position={[0, 0, 55]} size={[16, 5, 12]} doorways={['north']} />
       <RoomLighting position={[0, 0, 55]} theme="cozy" />
       <RoomArtworks placements={contactPlacements} />
+
+      {/* Minimap */}
+      <Minimap />
     </>
   );
 }
