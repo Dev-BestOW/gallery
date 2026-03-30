@@ -1,6 +1,7 @@
 import Room from './Room';
 import Lighting from './Lighting';
 import RoomLighting from './RoomLighting';
+import { Environment } from '@react-three/drei';
 import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
@@ -90,6 +91,7 @@ export default function Gallery() {
   return (
     <>
       <Lighting />
+      <Environment preset="studio" environmentIntensity={0.3} />
       <Player />
       <SceneManager />
 

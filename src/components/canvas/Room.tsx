@@ -17,7 +17,7 @@ interface WallSegmentProps {
 function WallSegment({ position, size }: WallSegmentProps) {
   return (
     <RigidBody type="fixed" colliders="cuboid">
-      <mesh position={position} >
+      <mesh position={position} receiveShadow>
         <boxGeometry args={size} />
         <meshStandardMaterial color={COLORS.wall} />
       </mesh>
@@ -84,12 +84,12 @@ export default function Room({
     <group position={position}>
       {/* Floor */}
       <RigidBody type="fixed" colliders="cuboid">
-        <mesh position={[0, -0.15, 0]}>
+        <mesh position={[0, -0.15, 0]} receiveShadow>
           <boxGeometry args={[w, 0.3, d]} />
           <meshStandardMaterial
             color={COLORS.floor}
-            roughness={0.15}
-            metalness={0.4}
+            roughness={0.3}
+            metalness={0.1}
           />
         </mesh>
       </RigidBody>

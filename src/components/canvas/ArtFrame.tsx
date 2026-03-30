@@ -32,22 +32,22 @@ export default function ArtFrame({
     <group ref={groupRef} position={position} rotation={rotation}>
       {/* Frame border - 4 sides */}
       {/* Top */}
-      <mesh position={[0, h / 2 + pad / 2, depth / 2]}>
+      <mesh position={[0, h / 2 + pad / 2, depth / 2]} castShadow>
         <boxGeometry args={[w + pad * 2, pad, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
       {/* Bottom */}
-      <mesh position={[0, -h / 2 - pad / 2, depth / 2]}>
+      <mesh position={[0, -h / 2 - pad / 2, depth / 2]} castShadow>
         <boxGeometry args={[w + pad * 2, pad, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
       {/* Left */}
-      <mesh position={[-w / 2 - pad / 2, 0, depth / 2]}>
+      <mesh position={[-w / 2 - pad / 2, 0, depth / 2]} castShadow>
         <boxGeometry args={[pad, h + pad * 2, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
       {/* Right */}
-      <mesh position={[w / 2 + pad / 2, 0, depth / 2]}>
+      <mesh position={[w / 2 + pad / 2, 0, depth / 2]} castShadow>
         <boxGeometry args={[pad, h + pad * 2, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
