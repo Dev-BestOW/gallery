@@ -12,9 +12,9 @@
 | Severity | Count | Status |
 |----------|-------|--------|
 | CRITICAL | 3 | Fixed |
-| HIGH | 5 | Open |
-| MEDIUM | 6 | Open |
-| LOW | 3 | Open |
+| HIGH | 5 | Fixed |
+| MEDIUM | 6 | Fixed |
+| LOW | 3 | Fixed |
 
 ---
 

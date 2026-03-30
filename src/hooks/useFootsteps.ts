@@ -4,14 +4,14 @@ import * as THREE from 'three';
 
 let audioCtx: AudioContext | null = null;
 
-function getAudioContext() {
+export function getSharedAudioContext() {
   if (!audioCtx) audioCtx = new AudioContext();
   return audioCtx;
 }
 
 function playFootstep() {
   try {
-    const ctx = getAudioContext();
+    const ctx = getSharedAudioContext();
     if (ctx.state === 'suspended') ctx.resume();
 
     const osc = ctx.createOscillator();

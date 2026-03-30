@@ -17,6 +17,7 @@ export default function Player() {
   const isLocked = useGalleryStore((s) => s.isLocked);
   const isFocusing = useGalleryStore((s) => s.isFocusing);
   const setIsPointerLocked = useGalleryStore((s) => s.setIsPointerLocked);
+  const spawnPosition = useGalleryStore((s) => s.spawnPosition);
 
   const direction = useRef(new THREE.Vector3());
   const frontVector = useRef(new THREE.Vector3());
@@ -67,7 +68,7 @@ export default function Player() {
       .subVectors(frontVector.current, sideVector.current)
       .normalize()
       .multiplyScalar(speed)
-      .applyEuler(camera.rotation);
+      .applyQuaternion(camera.quaternion);
 
     const currentVel = rigidBodyRef.current.linvel();
     rigidBodyRef.current.setLinvel(
@@ -84,7 +85,7 @@ export default function Player() {
       <RigidBody
         ref={rigidBodyRef}
         type="dynamic"
-        position={[0, PLAYER.height, 0]}
+        position={spawnPosition || [0, PLAYER.height, 0]}
         enabledRotations={[false, false, false]}
         linearDamping={5}
         mass={70}

@@ -28,10 +28,11 @@ function PlacedArtwork({ artwork, position, rotation = [0, 0, 0], size }: Artwor
     const euler = new THREE.Euler(...rotation);
     normal.applyEuler(euler);
 
-    // 카메라 목표 위치: 작품 앞 focusDistance 만큼 떨어진 지점
+    // 카메라 목표 위치: 작품 앞 focusDistance 만큼 떨어진 지점 (눈높이 유지)
+    const eyeHeight = 1.7 + 1.7 / 2; // PLAYER.height + PLAYER.height/2
     const cameraPos: [number, number, number] = [
       position[0] + normal.x * ARTWORK.focusDistance,
-      position[1],
+      eyeHeight,
       position[2] + normal.z * ARTWORK.focusDistance,
     ];
 

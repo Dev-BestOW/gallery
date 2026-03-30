@@ -8,20 +8,18 @@ export default function WelcomeScreen() {
   const [visible, setVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const setHasEntered = useGalleryStore((s) => s.setHasEntered);
-  const setIsPointerLocked = useGalleryStore((s) => s.setIsPointerLocked);
 
   const handleEnter = useCallback(() => {
     if (isMobileDevice()) {
       // 모바일: 포인터 락 없이 바로 입장
       setHasEntered(true);
-      setIsPointerLocked(true); // 모바일에서는 항상 활성 상태로 취급
     } else {
       // 데스크탑: 포인터 락 요청
       const canvas = document.querySelector('canvas');
       if (canvas) canvas.requestPointerLock();
     }
     setFadeOut(true);
-  }, [setHasEntered, setIsPointerLocked]);
+  }, [setHasEntered]);
 
   // 데스크탑: 포인터 락 성공 시 입장 처리
   useEffect(() => {
