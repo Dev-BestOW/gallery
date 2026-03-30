@@ -4,11 +4,11 @@ interface RoomLightingProps {
 }
 
 const themeConfig = {
-  grand: { color: '#ffffff', intensity: 0.6 },
-  warm: { color: '#ffe4c4', intensity: 0.5 },
-  cool: { color: '#cce0ff', intensity: 0.5 },
-  dark: { color: '#e0d0ff', intensity: 0.4 },
-  cozy: { color: '#ffd9a0', intensity: 0.5 },
+  grand: { color: '#ffffff', intensity: 1.2 },
+  warm: { color: '#ffe4c4', intensity: 1.0 },
+  cool: { color: '#cce0ff', intensity: 1.0 },
+  dark: { color: '#e0d0ff', intensity: 0.8 },
+  cozy: { color: '#ffd9a0', intensity: 1.0 },
 };
 
 export default function RoomLighting({ position, theme }: RoomLightingProps) {

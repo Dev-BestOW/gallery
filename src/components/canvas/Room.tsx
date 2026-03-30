@@ -59,7 +59,7 @@ function TexturedFloor({ w, d }: { w: number; d: number }) {
       <boxGeometry args={[w, 0.3, d]} />
       <meshStandardMaterial
         {...floorTex}
-        color="#888888"
+        color="#c8c0b8"
         roughness={0.3}
         metalness={0.1}
       />

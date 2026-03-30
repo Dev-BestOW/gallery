@@ -156,8 +156,7 @@ export default function ArtFrame({
           transparent
           opacity={0.08}
           roughness={0.05}
-          metalness={0.3}
-          envMapIntensity={1.5}
+          metalness={0.1}
           color="#ffffff"
         />
       </mesh>

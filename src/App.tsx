@@ -25,8 +25,8 @@ export default function App() {
         dpr={[1, 1.5]}
         style={{ position: 'fixed', inset: 0 }}
       >
-        <color attach="background" args={['#1a1a1a']} />
-        <fog attach="fog" args={['#1a1a1a', 15, 50]} />
+        <color attach="background" args={['#f0ece6']} />
+        <fog attach="fog" args={['#f0ece6', 20, 60]} />
         <Suspense fallback={null}>
           <Physics gravity={[0, -9.81, 0]}>
             <Gallery />

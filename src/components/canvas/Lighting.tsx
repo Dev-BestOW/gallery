@@ -1,10 +1,10 @@
 export default function Lighting() {
   return (
     <>
-      <ambientLight intensity={0.15} />
+      <ambientLight intensity={0.6} />
       <directionalLight
         position={[10, 10, 5]}
-        intensity={0.4}
+        intensity={0.8}
         castShadow
         shadow-mapSize={[1024, 1024]}
         shadow-camera-near={0.5}
