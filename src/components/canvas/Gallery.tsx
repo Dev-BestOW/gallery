@@ -6,10 +6,12 @@ import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
 import FloorGuide, { FloorArrow } from './FloorGuide';
 import { useProximityDetector } from '../../hooks/useProximity';
+import { useCameraFocus } from '../../hooks/useCameraFocus';
 import portfolio from '../../data/portfolio';
 
-function ProximityManager() {
+function SceneManager() {
   useProximityDetector();
+  useCameraFocus();
   return null;
 }
 
@@ -70,7 +72,7 @@ export default function Gallery() {
     <>
       <Lighting />
       <Player />
-      <ProximityManager />
+      <SceneManager />
 
       {/* ===== Entrance Hall ===== */}
       <Room position={[0, 0, 0]} size={[20, 5, 15]} doorways={['south']} />

@@ -122,7 +122,7 @@ interface Wing {
 - [x] ArtFrame 컴포넌트 (액자 + 이미지 + 플레이트)
 - [x] useProximity 훅 (작품 근접 감지)
 - [x] ArtworkDetail 오버레이 (상세 패널)
-- [ ] 카메라 작품 포커스 애니메이션 (Phase 4로 이동)
+- [x] 카메라 작품 포커스 애니메이션
 - [x] portfolio.ts 데이터 구조 + 샘플 데이터
 
 ### Phase 3: Multi-Room Gallery ✅
@@ -132,12 +132,12 @@ interface Wing {
 - [x] Entrance Hall 대형 타이포
 - [x] 바닥 안내선 또는 화살표
 
-### Phase 4: Polish
-- [ ] 바닥 반사 효과 (MeshReflectorMaterial)
-- [ ] 스포트라이트 연출 강화
-- [ ] 로딩 화면 (WelcomeScreen)
-- [ ] 페이드인/아웃 전환 효과
-- [ ] 텍스처 적용 (벽: 흰벽, 바닥: 대리석/나무)
+### Phase 4: Polish ✅
+- [x] 바닥 반사 효과 (metalness/roughness 기반 경량 반사)
+- [x] 조명 연출 개선 (섹션별 테마 조명 + emissive 머티리얼)
+- [x] 로딩 화면 (WelcomeScreen + 페이드아웃)
+- [x] 페이드인/아웃 전환 효과
+- [x] 텍스처 개선 (바닥 metalness 반사, 벽 깔끔한 머티리얼)
 
 ### Phase 5: Mobile & UX
 - [ ] 모바일 감지 + 가상 조이스틱

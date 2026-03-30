@@ -6,39 +6,34 @@ export default function HUD() {
   const nearbyArtwork = useGalleryStore((s) => s.nearbyArtwork);
   const viewingArtwork = useGalleryStore((s) => s.viewingArtwork);
 
-  const handleEnter = useCallback(() => {
+  const handleResume = useCallback(() => {
     const canvas = document.querySelector('canvas');
     if (canvas) canvas.requestPointerLock();
   }, []);
 
+  // ESC로 포인터 락 해제 시: 재입장 안내 (WelcomeScreen과 별도)
   if (!isPointerLocked && !viewingArtwork) {
     return (
       <div
-        onClick={handleEnter}
+        onClick={handleResume}
         style={{
           position: 'fixed',
           inset: 0,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          zIndex: 100,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 50,
           cursor: 'pointer',
         }}
       >
         <div style={{ textAlign: 'center', color: '#fff' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '1rem', fontWeight: 300 }}>
-            Gallery Portfolio
-          </h1>
-          <p style={{ fontSize: '1.1rem', opacity: 0.8, marginBottom: '2rem' }}>
-            클릭하여 갤러리에 입장하세요
+          <p style={{ fontSize: '1.1rem', opacity: 0.8 }}>
+            클릭하여 계속하기
           </p>
-          <div style={{ fontSize: '0.85rem', opacity: 0.5, lineHeight: 1.8 }}>
-            <p>WASD / 방향키 — 이동</p>
-            <p>마우스 — 둘러보기</p>
-            <p>Shift — 달리기</p>
-            <p>ESC — 메뉴</p>
-          </div>
+          <p style={{ fontSize: '0.75rem', opacity: 0.4, marginTop: 8 }}>
+            WASD 이동 · 마우스 둘러보기
+          </p>
         </div>
       </div>
     );

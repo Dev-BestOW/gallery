@@ -1,12 +1,15 @@
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import Gallery from './components/canvas/Gallery';
 import HUD from './components/ui/HUD';
 import ArtworkDetail from './components/ui/ArtworkDetail';
+import WelcomeScreen from './components/ui/WelcomeScreen';
 
 export default function App() {
   return (
     <>
+      <WelcomeScreen />
       <HUD />
       <ArtworkDetail />
       <Canvas
@@ -16,9 +19,11 @@ export default function App() {
       >
         <color attach="background" args={['#1a1a1a']} />
         <fog attach="fog" args={['#1a1a1a', 30, 80]} />
-        <Physics gravity={[0, -9.81, 0]}>
-          <Gallery />
-        </Physics>
+        <Suspense fallback={null}>
+          <Physics gravity={[0, -9.81, 0]}>
+            <Gallery />
+          </Physics>
+        </Suspense>
       </Canvas>
     </>
   );

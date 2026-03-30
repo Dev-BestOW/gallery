@@ -84,9 +84,13 @@ export default function Room({
     <group position={position}>
       {/* Floor */}
       <RigidBody type="fixed" colliders="cuboid">
-        <mesh position={[0, -0.15, 0]} receiveShadow>
+        <mesh position={[0, -0.15, 0]}>
           <boxGeometry args={[w, 0.3, d]} />
-          <meshStandardMaterial color={COLORS.floor} roughness={0.2} metalness={0.1} />
+          <meshStandardMaterial
+            color={COLORS.floor}
+            roughness={0.15}
+            metalness={0.4}
+          />
         </mesh>
       </RigidBody>
 
