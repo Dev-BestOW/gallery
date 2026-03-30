@@ -32,22 +32,22 @@ export default function ArtFrame({
     <group ref={groupRef} position={position} rotation={rotation}>
       {/* Frame border - 4 sides */}
       {/* Top */}
-      <mesh position={[0, h / 2 + pad / 2, depth / 2]} castShadow>
+      <mesh position={[0, h / 2 + pad / 2, depth / 2]}>
         <boxGeometry args={[w + pad * 2, pad, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
       {/* Bottom */}
-      <mesh position={[0, -h / 2 - pad / 2, depth / 2]} castShadow>
+      <mesh position={[0, -h / 2 - pad / 2, depth / 2]}>
         <boxGeometry args={[w + pad * 2, pad, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
       {/* Left */}
-      <mesh position={[-w / 2 - pad / 2, 0, depth / 2]} castShadow>
+      <mesh position={[-w / 2 - pad / 2, 0, depth / 2]}>
         <boxGeometry args={[pad, h + pad * 2, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
       {/* Right */}
-      <mesh position={[w / 2 + pad / 2, 0, depth / 2]} castShadow>
+      <mesh position={[w / 2 + pad / 2, 0, depth / 2]}>
         <boxGeometry args={[pad, h + pad * 2, depth]} />
         <meshStandardMaterial color={COLORS.frame} roughness={0.4} />
       </mesh>
@@ -65,17 +65,6 @@ export default function ArtFrame({
           roughness={0.9}
         />
       </mesh>
-
-      {/* Spotlight from above */}
-      <spotLight
-        position={[0, 1.5, 1]}
-        target-position={[0, 0, 0]}
-        angle={0.5}
-        penumbra={0.8}
-        intensity={2}
-        distance={5}
-        castShadow={false}
-      />
 
       {/* Info plate below frame */}
       <group position={[0, -h / 2 - pad - 0.25, 0.01]}>

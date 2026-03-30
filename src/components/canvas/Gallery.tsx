@@ -1,7 +1,10 @@
 import Room from './Room';
 import Lighting from './Lighting';
+import RoomLighting from './RoomLighting';
 import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
+import EntranceTitle from './EntranceTitle';
+import FloorGuide, { FloorArrow } from './FloorGuide';
 import { useProximityDetector } from '../../hooks/useProximity';
 import portfolio from '../../data/portfolio';
 
@@ -33,7 +36,7 @@ export default function Gallery() {
     2.2,
   );
 
-  // Wing B - Projects: east wall (x = 10, faces west → rotY = -π/2) and west wall
+  // Wing B - Projects: east wall and west wall
   const projectsEast = distributeOnWall(
     projects.artworks.slice(0, 2),
     [9.7, 2.2, 32], [9.7, 2.2, 42],
@@ -69,27 +72,54 @@ export default function Gallery() {
       <Player />
       <ProximityManager />
 
-      {/* Entrance Hall */}
+      {/* ===== Entrance Hall ===== */}
       <Room position={[0, 0, 0]} size={[20, 5, 15]} doorways={['south']} />
+      <RoomLighting position={[0, 0, 0]} theme="grand" />
+      <EntranceTitle />
       <RoomArtworks placements={entrancePlacements} />
 
-      {/* Wing A - About */}
+      {/* ===== Corridor ===== */}
+      <Room position={[0, 0, 18.5]} size={[20, 5, 7]} doorways={['north', 'south', 'east', 'west']} />
+      <RoomLighting position={[0, 0, 18.5]} theme="warm" />
+
+      {/* Floor guides: corridor → wings */}
+      <FloorGuide from={[0, 0.02, 8]} to={[0, 0.02, 15]} />
+      <FloorArrow position={[0, 0.02, 14]} rotation={[0, Math.PI, 0]} color="#888" />
+
+      {/* Corridor → Wing A (west) */}
+      <FloorGuide from={[-5, 0.02, 18.5]} to={[-10, 0.02, 18.5]} />
+      <FloorArrow position={[-9, 0.02, 18.5]} rotation={[0, Math.PI / 2, 0]} color="#e8c47a" />
+
+      {/* Corridor → Wing B (south) */}
+      <FloorGuide from={[0, 0.02, 22]} to={[0, 0.02, 28]} />
+      <FloorArrow position={[0, 0.02, 27]} rotation={[0, Math.PI, 0]} color="#7ab8e8" />
+
+      {/* Corridor → Wing C (east) */}
+      <FloorGuide from={[5, 0.02, 18.5]} to={[10, 0.02, 18.5]} />
+      <FloorArrow position={[9, 0.02, 18.5]} rotation={[0, -Math.PI / 2, 0]} color="#c07ae8" />
+
+      {/* ===== Wing A - About ===== */}
       <Room position={[-20, 0, 22.5]} size={[16, 5, 12]} doorways={['east']} />
+      <RoomLighting position={[-20, 0, 22.5]} theme="warm" />
       <RoomArtworks placements={aboutPlacements} />
 
-      {/* Corridor */}
-      <Room position={[0, 0, 18.5]} size={[20, 5, 7]} doorways={['north', 'south', 'east', 'west']} />
-
-      {/* Wing B - Projects */}
+      {/* ===== Wing B - Projects ===== */}
       <Room position={[0, 0, 37]} size={[20, 5, 15]} doorways={['north', 'south']} />
+      <RoomLighting position={[0, 0, 37]} theme="cool" />
       <RoomArtworks placements={[...projectsEast, ...projectsWest]} />
 
-      {/* Wing C - Career */}
+      {/* Wing B → Wing D */}
+      <FloorGuide from={[0, 0.02, 44]} to={[0, 0.02, 48]} />
+      <FloorArrow position={[0, 0.02, 47]} rotation={[0, Math.PI, 0]} color="#e8a07a" />
+
+      {/* ===== Wing C - Career ===== */}
       <Room position={[20, 0, 22.5]} size={[16, 5, 12]} doorways={['west']} />
+      <RoomLighting position={[20, 0, 22.5]} theme="dark" />
       <RoomArtworks placements={careerPlacements} />
 
-      {/* Wing D - Contact */}
+      {/* ===== Wing D - Contact ===== */}
       <Room position={[0, 0, 55]} size={[16, 5, 12]} doorways={['north']} />
+      <RoomLighting position={[0, 0, 55]} theme="cozy" />
       <RoomArtworks placements={contactPlacements} />
     </>
   );

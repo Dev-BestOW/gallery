@@ -10,8 +10,8 @@ export default function App() {
       <HUD />
       <ArtworkDetail />
       <Canvas
-        shadows
         camera={{ fov: 70, near: 0.1, far: 200 }}
+        dpr={[1, 1.5]}
         style={{ position: 'fixed', inset: 0 }}
       >
         <color attach="background" args={['#1a1a1a']} />

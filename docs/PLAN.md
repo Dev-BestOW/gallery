@@ -125,12 +125,12 @@ interface Wing {
 - [ ] 카메라 작품 포커스 애니메이션 (Phase 4로 이동)
 - [x] portfolio.ts 데이터 구조 + 샘플 데이터
 
-### Phase 3: Multi-Room Gallery
-- [ ] 다중 Room 배치 + Doorway 연결
-- [ ] 섹션별 데이터 바인딩 (Wing → Room → ArtFrame)
-- [ ] 섹션별 조명 테마 적용
-- [ ] Entrance Hall 대형 타이포
-- [ ] 바닥 안내선 또는 화살표
+### Phase 3: Multi-Room Gallery ✅
+- [x] 다중 Room 배치 + Doorway 연결
+- [x] 섹션별 데이터 바인딩 (Wing → Room → ArtFrame)
+- [x] 섹션별 조명 테마 적용
+- [x] Entrance Hall 대형 타이포
+- [x] 바닥 안내선 또는 화살표
 
 ### Phase 4: Polish
 - [ ] 바닥 반사 효과 (MeshReflectorMaterial)
