@@ -4,10 +4,10 @@ import { useGalleryStore } from '../stores/useGalleryStore';
 // 섹션별 플레이어 시작 위치
 const sectionPositions: Record<string, [number, number, number]> = {
   entrance: [0, 1.7, 0],
-  about: [-20, 1.7, 22.5],
-  projects: [0, 1.7, 37],
-  career: [20, 1.7, 22.5],
-  contact: [0, 1.7, 55],
+  about: [-18, 1.7, 11],
+  projects: [0, 1.7, 22],
+  career: [18, 1.7, 11],
+  contact: [0, 1.7, 35.5],
 };
 
 export function useDeepLink() {

@@ -3,18 +3,19 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 
-const SCALE = 3;
-const MAP_W = 150;
-const MAP_H = 200;
-const OFFSET_X = 30;
+const SCALE = 2.5;
+const MAP_W = 140;
+const MAP_H = 130;
+const OFFSET_X = 28;
+const OFFSET_Z = 8;
 
 const rooms = [
   { x: 0, z: 0, w: 20, d: 15, label: 'Entrance' },
-  { x: 0, z: 18.5, w: 20, d: 7, label: '' },
-  { x: -20, z: 22.5, w: 16, d: 12, label: 'About' },
-  { x: 0, z: 37, w: 20, d: 15, label: 'Projects' },
-  { x: 20, z: 22.5, w: 16, d: 12, label: 'Career' },
-  { x: 0, z: 55, w: 16, d: 12, label: 'Contact' },
+  { x: 0, z: 11, w: 20, d: 7, label: '' },
+  { x: -18, z: 11, w: 16, d: 12, label: 'About' },
+  { x: 0, z: 22, w: 20, d: 15, label: 'Projects' },
+  { x: 18, z: 11, w: 16, d: 12, label: 'Career' },
+  { x: 0, z: 35.5, w: 16, d: 12, label: 'Contact' },
 ];
 
 const dirVec = new THREE.Vector3();
@@ -42,7 +43,7 @@ export default function Minimap() {
 
     rooms.forEach((room) => {
       const rx = (room.x - room.w / 2 + OFFSET_X) * SCALE;
-      const ry = (room.z - room.d / 2) * SCALE;
+      const ry = (room.z - room.d / 2 + OFFSET_Z) * SCALE;
       const rw = room.w * SCALE;
       const rh = room.d * SCALE;
 
@@ -60,7 +61,7 @@ export default function Minimap() {
 
     // Player dot
     const px = (camera.position.x + OFFSET_X) * SCALE;
-    const py = camera.position.z * SCALE;
+    const py = (camera.position.z + OFFSET_Z) * SCALE;
 
     ctx.fillStyle = '#ff4444';
     ctx.beginPath();
