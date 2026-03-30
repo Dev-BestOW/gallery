@@ -118,12 +118,12 @@ interface Wing {
 - [x] 기본 조명 (ambient + directional)
 - [x] 포인터 락 + WASD 이동 동작 확인
 
-### Phase 2: Artwork System
-- [ ] ArtFrame 컴포넌트 (액자 + 이미지 + 플레이트)
-- [ ] useProximity 훅 (작품 근접 감지)
-- [ ] ArtworkDetail 오버레이 (상세 패널)
-- [ ] 카메라 작품 포커스 애니메이션
-- [ ] portfolio.ts 데이터 구조 + 샘플 데이터
+### Phase 2: Artwork System ✅
+- [x] ArtFrame 컴포넌트 (액자 + 이미지 + 플레이트)
+- [x] useProximity 훅 (작품 근접 감지)
+- [x] ArtworkDetail 오버레이 (상세 패널)
+- [ ] 카메라 작품 포커스 애니메이션 (Phase 4로 이동)
+- [x] portfolio.ts 데이터 구조 + 샘플 데이터
 
 ### Phase 3: Multi-Room Gallery
 - [ ] 다중 Room 배치 + Doorway 연결

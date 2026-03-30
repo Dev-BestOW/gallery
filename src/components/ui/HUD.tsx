@@ -1,11 +1,20 @@
+import { useCallback } from 'react';
 import { useGalleryStore } from '../../stores/useGalleryStore';
 
 export default function HUD() {
   const isPointerLocked = useGalleryStore((s) => s.isPointerLocked);
+  const nearbyArtwork = useGalleryStore((s) => s.nearbyArtwork);
+  const viewingArtwork = useGalleryStore((s) => s.viewingArtwork);
 
-  if (!isPointerLocked) {
+  const handleEnter = useCallback(() => {
+    const canvas = document.querySelector('canvas');
+    if (canvas) canvas.requestPointerLock();
+  }, []);
+
+  if (!isPointerLocked && !viewingArtwork) {
     return (
       <div
+        onClick={handleEnter}
         style={{
           position: 'fixed',
           inset: 0,
@@ -38,20 +47,48 @@ export default function HUD() {
   return (
     <>
       {/* Crosshair */}
-      <div
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 6,
-          height: 6,
-          borderRadius: '50%',
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',
-          pointerEvents: 'none',
-          zIndex: 10,
-        }}
-      />
+      {isPointerLocked && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 6,
+            height: 6,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            pointerEvents: 'none',
+            zIndex: 10,
+          }}
+        />
+      )}
+
+      {/* Nearby artwork hint */}
+      {nearbyArtwork && isPointerLocked && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '15%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '10px 24px',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            borderRadius: 8,
+            color: '#fff',
+            fontSize: '0.9rem',
+            pointerEvents: 'none',
+            zIndex: 10,
+            textAlign: 'center',
+            backdropFilter: 'blur(4px)',
+          }}
+        >
+          <p style={{ fontWeight: 500 }}>{nearbyArtwork.title}</p>
+          <p style={{ fontSize: '0.75rem', opacity: 0.7, marginTop: 4 }}>
+            클릭하여 감상하기
+          </p>
+        </div>
+      )}
     </>
   );
 }

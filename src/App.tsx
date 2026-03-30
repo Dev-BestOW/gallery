@@ -2,11 +2,13 @@ import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import Gallery from './components/canvas/Gallery';
 import HUD from './components/ui/HUD';
+import ArtworkDetail from './components/ui/ArtworkDetail';
 
 export default function App() {
   return (
     <>
       <HUD />
+      <ArtworkDetail />
       <Canvas
         shadows
         camera={{ fov: 70, near: 0.1, far: 200 }}
