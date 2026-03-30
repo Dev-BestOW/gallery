@@ -62,8 +62,8 @@ export default function ArtFrame({
         position={[0, 1.8, 0.8]}
         target={spotTarget}
         angle={0.5}
-        penumbra={0.6}
-        intensity={1.5}
+        penumbra={0.7}
+        intensity={0.8}
         distance={5}
         decay={2}
         color="#fff8f0"

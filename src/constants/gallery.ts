@@ -32,6 +32,21 @@ export const ARTWORK = {
 export const COLORS = {
   wall: '#f5f0eb',
   floor: '#2a2a2a',
-  ceiling: '#ffffff',
+  ceiling: '#faf8f5',
   frame: '#3d2b1f',
+  // Wainscoting (lower wall panel)
+  wainscot: '#e8e2d8',
+  wainscotTrim: '#d8d0c4',
+  // Architectural accents
+  column: '#f0ece6',
+  columnBase: '#e0d8cc',
+  floorBorder: '#a09080',
+  // Per-wing wall accent colors (upper wall above wainscoting)
+  wingColors: {
+    grand: '#8b1a1a',   // deep crimson (Louvre style)
+    warm: '#6b4c3b',    // warm brown
+    cool: '#3a4a5c',    // deep navy blue
+    dark: '#4a3a5c',    // royal purple
+    cozy: '#5c4a3a',    // warm espresso
+  },
 } as const;

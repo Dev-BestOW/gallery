@@ -11,6 +11,7 @@ import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
 import EntranceParticles from './EntranceParticles';
 import FloorGuide, { FloorArrow } from './FloorGuide';
+import GalleryObjects from './GalleryObjects';
 import { useProximityDetector } from '../../hooks/useProximity';
 import { useCameraFocus } from '../../hooks/useCameraFocus';
 import { useFootsteps } from '../../hooks/useFootsteps';
@@ -112,16 +113,17 @@ export default function Gallery() {
       <Player />
       <SceneManager />
       <CameraTracker />
+      <GalleryObjects />
 
       {/* ===== Entrance Hall ===== */}
-      <Room position={[0, 0, 0]} size={[20, 5, 15]} doorways={['south']} />
+      <Room position={[0, 0, 0]} size={[20, 5, 15]} doorways={['south']} theme="grand" />
       <RoomLighting position={[0, 0, 0]} theme="grand" />
       <EntranceTitle />
       <EntranceParticles />
       <RoomArtworks placements={entrancePlacements} />
 
       {/* ===== Corridor ===== */}
-      <Room position={[0, 0, 11]} size={[20, 5, 7]} doorways={['north', 'south', 'east', 'west']} />
+      <Room position={[0, 0, 11]} size={[20, 5, 7]} doorways={['north', 'south', 'east', 'west']} theme="warm" />
       <RoomLighting position={[0, 0, 11]} theme="warm" />
 
       {/* Floor guides: Entrance → Corridor (south) */}
@@ -141,13 +143,13 @@ export default function Gallery() {
       <FloorArrow position={[7.5, 0.02, 11]} rotation={[0, Math.PI / 2, 0]} color="#c07ae8" />
 
       {/* ===== Wing A - About ===== */}
-      <Room position={[-18, 0, 11]} size={[16, 5, 12]} doorways={['east']} />
+      <Room position={[-18, 0, 11]} size={[16, 5, 12]} doorways={['east']} theme="warm" />
       <RoomLighting position={[-18, 0, 11]} theme="warm" />
       <RoomArtworks placements={aboutPlacements} />
       <Sparkles position={[-18, 2.5, 11]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#ffe4c4" />
 
       {/* ===== Wing B - Projects ===== */}
-      <Room position={[0, 0, 22]} size={[20, 5, 15]} doorways={['north', 'south']} />
+      <Room position={[0, 0, 22]} size={[20, 5, 15]} doorways={['north', 'south']} theme="cool" />
       <RoomLighting position={[0, 0, 22]} theme="cool" />
       <RoomArtworks placements={[...projectsEast, ...projectsWest]} />
       <Sparkles position={[0, 2.5, 22]} count={15} scale={[18, 4, 13]} size={1.5} speed={0.2} opacity={0.15} color="#cce0ff" />
@@ -157,13 +159,13 @@ export default function Gallery() {
       <FloorArrow position={[0, 0.02, 28.5]} rotation={[0, 0, 0]} color="#e8a07a" />
 
       {/* ===== Wing C - Career ===== */}
-      <Room position={[18, 0, 11]} size={[16, 5, 12]} doorways={['west']} />
+      <Room position={[18, 0, 11]} size={[16, 5, 12]} doorways={['west']} theme="dark" />
       <RoomLighting position={[18, 0, 11]} theme="dark" />
       <RoomArtworks placements={careerPlacements} />
       <Sparkles position={[18, 2.5, 11]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#e0d0ff" />
 
       {/* ===== Wing D - Contact ===== */}
-      <Room position={[0, 0, 35.5]} size={[16, 5, 12]} doorways={['north']} />
+      <Room position={[0, 0, 35.5]} size={[16, 5, 12]} doorways={['north']} theme="cozy" />
       <RoomLighting position={[0, 0, 35.5]} theme="cozy" />
       <RoomArtworks placements={contactPlacements} />
       <Sparkles position={[0, 2.5, 35.5]} count={15} scale={[14, 4, 10]} size={1.5} speed={0.2} opacity={0.15} color="#ffd9a0" />

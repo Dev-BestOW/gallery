@@ -1,8 +1,7 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
-import { EffectComposer, Bloom, Vignette, SSAO } from '@react-three/postprocessing';
-import { BlendFunction } from 'postprocessing';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import Gallery from './components/canvas/Gallery';
 import HUD from './components/ui/HUD';
 import ArtworkDetail from './components/ui/ArtworkDetail';
@@ -36,12 +35,6 @@ export default function App() {
         </Suspense>
         {!isMobile && (
           <EffectComposer>
-            <SSAO
-              radius={0.1}
-              intensity={1.5}
-              luminanceInfluence={0.6}
-              blendFunction={BlendFunction.MULTIPLY}
-            />
             <Bloom
               luminanceThreshold={0.9}
               luminanceSmoothing={0.9}
