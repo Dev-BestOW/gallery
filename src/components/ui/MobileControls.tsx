@@ -128,6 +128,7 @@ export default function MobileControls() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
         style={{
           position: 'fixed',
           bottom: 40,
