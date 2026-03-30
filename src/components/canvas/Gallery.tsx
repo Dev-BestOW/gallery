@@ -4,15 +4,22 @@ import RoomLighting from './RoomLighting';
 import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
+import EntranceParticles from './EntranceParticles';
 import FloorGuide, { FloorArrow } from './FloorGuide';
 import Minimap from '../ui/Minimap';
 import { useProximityDetector } from '../../hooks/useProximity';
 import { useCameraFocus } from '../../hooks/useCameraFocus';
+import { useFootsteps } from '../../hooks/useFootsteps';
+import { useAmbientSound } from '../../hooks/useAmbientSound';
+import { useDeepLink } from '../../hooks/useDeepLink';
 import portfolio from '../../data/portfolio';
 
 function SceneManager() {
   useProximityDetector();
   useCameraFocus();
+  useFootsteps();
+  useAmbientSound();
+  useDeepLink();
   return null;
 }
 
@@ -79,6 +86,7 @@ export default function Gallery() {
       <Room position={[0, 0, 0]} size={[20, 5, 15]} doorways={['south']} />
       <RoomLighting position={[0, 0, 0]} theme="grand" />
       <EntranceTitle />
+      <EntranceParticles />
       <RoomArtworks placements={entrancePlacements} />
 
       {/* ===== Corridor ===== */}

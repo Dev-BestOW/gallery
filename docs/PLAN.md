@@ -145,9 +145,9 @@ interface Wing {
 - [x] 미니맵 HUD (Canvas 내 Html 오버레이)
 - [x] 반응형 상세 패널
 
-### Phase 6: Extra (Optional)
-- [ ] 발자국 사운드 효과
-- [ ] 배경 음악 (ambient)
-- [ ] URL 딥링크 (섹션별)
-- [ ] 방명록 기능
-- [ ] 파티클 이펙트 (엔트런스)
+### Phase 6: Extra (Optional) ✅
+- [x] 발자국 사운드 효과 (Web Audio API 합성)
+- [x] 배경 음악 (ambient drone 합성)
+- [x] URL 딥링크 (해시 기반 섹션 라우팅)
+- [ ] 방명록 기능 (백엔드 필요, 미구현)
+- [x] 파티클 이펙트 (엔트런스 Sparkles)
