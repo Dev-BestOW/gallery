@@ -10,6 +10,7 @@ import MobileControls from './components/ui/MobileControls';
 import Minimap from './components/ui/Minimap';
 import LoadingScreen from './components/ui/LoadingScreen';
 import ErrorBoundary from './components/ui/ErrorBoundary';
+import WingIndicator from './components/ui/WingIndicator';
 import { useIsMobile } from './hooks/useIsMobile';
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
       <ArtworkDetail />
       {isMobile && <MobileControls />}
       <Minimap />
+      <WingIndicator />
       <ErrorBoundary>
         <Canvas
           camera={{ fov: 75, near: 0.1, far: 200 }}

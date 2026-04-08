@@ -215,7 +215,7 @@ function Column({ position }: { position: [number, number, number] }) {
           <meshStandardMaterial color={COLORS.columnBase} roughness={0.4} />
         </mesh>
         {/* Shaft */}
-        <mesh position={[0, baseH + colH / 2, 0]} castShadow>
+        <mesh position={[0, baseH + colH / 2, 0]}>
           <cylinderGeometry args={[colR, colR * 1.05, colH, 16]} />
           <meshStandardMaterial color={COLORS.column} roughness={0.35} metalness={0.05} />
         </mesh>

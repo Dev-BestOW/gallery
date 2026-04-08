@@ -70,9 +70,11 @@ export default function WelcomeScreen() {
         <h1
           style={{
             fontSize: '3.5rem',
-            fontWeight: 200,
-            letterSpacing: '-0.02em',
+            fontWeight: 300,
+            fontFamily: "'Cormorant Garamond', serif",
+            letterSpacing: '0.02em',
             marginBottom: 8,
+            fontStyle: 'italic',
           }}
         >
           Gallery Portfolio

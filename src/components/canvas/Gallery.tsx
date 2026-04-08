@@ -9,7 +9,6 @@ import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
 import EntranceParticles from './EntranceParticles';
-import FloorGuide, { FloorArrow } from './FloorGuide';
 import GalleryObjects from './GalleryObjects';
 import { useProximityDetector } from '../../hooks/useProximity';
 import { useCameraFocus } from '../../hooks/useCameraFocus';
@@ -129,21 +128,6 @@ export default function Gallery() {
       <Room position={[0, 0, 11]} size={[20, 5, 7]} doorways={['north', 'south', 'east', 'west']} theme="warm" />
       <RoomLighting position={[0, 0, 11]} theme="warm" />
 
-      {/* Floor guides: Entrance → Corridor (south) */}
-      <FloorGuide from={[0, 0.02, 4]} to={[0, 0.02, 7]} />
-      <FloorArrow position={[0, 0.02, 6.5]} rotation={[0, 0, 0]} color="#888" />
-
-      {/* Corridor → Wing A (west) */}
-      <FloorGuide from={[-3, 0.02, 11]} to={[-8, 0.02, 11]} />
-      <FloorArrow position={[-7.5, 0.02, 11]} rotation={[0, -Math.PI / 2, 0]} color="#e8c47a" />
-
-      {/* Corridor → Wing B (south) */}
-      <FloorGuide from={[0, 0.02, 13]} to={[0, 0.02, 14]} />
-      <FloorArrow position={[0, 0.02, 13.8]} rotation={[0, 0, 0]} color="#7ab8e8" />
-
-      {/* Corridor → Wing C (east) */}
-      <FloorGuide from={[3, 0.02, 11]} to={[8, 0.02, 11]} />
-      <FloorArrow position={[7.5, 0.02, 11]} rotation={[0, Math.PI / 2, 0]} color="#c07ae8" />
 
       {/* ===== Wing A - About ===== */}
       <Room position={[-18, 0, 11]} size={[16, 5, 12]} doorways={['east']} theme="warm" />
@@ -157,9 +141,6 @@ export default function Gallery() {
       <RoomArtworks placements={[...projectsEast, ...projectsWest]} />
       <Sparkles position={[0, 2.5, 22]} count={15} scale={[18, 4, 13]} size={1.5} speed={0.2} opacity={0.15} color="#cce0ff" />
 
-      {/* Wing B → Wing D (south) */}
-      <FloorGuide from={[0, 0.02, 27]} to={[0, 0.02, 29]} />
-      <FloorArrow position={[0, 0.02, 28.5]} rotation={[0, 0, 0]} color="#e8a07a" />
 
       {/* ===== Wing C - Career ===== */}
       <Room position={[18, 0, 11]} size={[16, 5, 12]} doorways={['west']} theme="dark" />

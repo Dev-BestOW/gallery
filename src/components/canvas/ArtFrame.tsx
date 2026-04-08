@@ -135,10 +135,32 @@ export default function ArtFrame({
       >
         <planeGeometry args={[w - innerPad * 2 - matWidth * 2, h - innerPad * 2 - matWidth * 2]} />
         <meshStandardMaterial
-          color={artwork.image ? undefined : '#e8e0d4'}
+          color={artwork.image ? undefined : '#ddd5c8'}
           roughness={0.9}
         />
       </mesh>
+
+      {/* === Placeholder visual for empty artwork === */}
+      {!artwork.image && (
+        <group position={[0, 0, depth / 2 + 0.002]}>
+          {/* Decorative initial letter */}
+          <Text
+            position={[0, 0.05, 0]}
+            fontSize={0.5}
+            color="#c8bfb2"
+            anchorX="center"
+            anchorY="middle"
+            font={undefined}
+          >
+            {artwork.title.charAt(0).toUpperCase()}
+          </Text>
+          {/* Subtle decorative line */}
+          <mesh position={[0, -0.3, 0]}>
+            <planeGeometry args={[0.4, 0.003]} />
+            <meshStandardMaterial color="#c0b5a5" roughness={0.8} />
+          </mesh>
+        </group>
+      )}
 
       {/* === Glass layer (subtle reflection) === */}
       <mesh position={[0, 0, depth / 2 + 0.003]}>
