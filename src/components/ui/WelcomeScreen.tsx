@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useGalleryStore } from '../../stores/useGalleryStore';
-
-const isMobileDevice = () =>
-  'ontouchstart' in window || navigator.maxTouchPoints > 0;
+import { checkIsMobile } from '../../hooks/useIsMobile';
 
 export default function WelcomeScreen() {
   const [visible, setVisible] = useState(true);
@@ -10,7 +8,7 @@ export default function WelcomeScreen() {
   const setHasEntered = useGalleryStore((s) => s.setHasEntered);
 
   const handleEnter = useCallback(() => {
-    if (isMobileDevice()) {
+    if (checkIsMobile()) {
       // 모바일: 포인터 락 없이 바로 입장
       setHasEntered(true);
     } else {
@@ -95,7 +93,7 @@ export default function WelcomeScreen() {
             fontWeight: 300,
           }}
         >
-          {isMobileDevice() ? '터치하여 갤러리에 입장하세요' : '클릭하여 갤러리에 입장하세요'}
+          {checkIsMobile() ? '터치하여 갤러리에 입장하세요' : '클릭하여 갤러리에 입장하세요'}
         </p>
 
         <div
@@ -108,7 +106,7 @@ export default function WelcomeScreen() {
             textAlign: 'left',
           }}
         >
-          {isMobileDevice() ? (
+          {checkIsMobile() ? (
             <>
               <span style={{ opacity: 0.7 }}>좌측</span><span>조이스틱 이동</span>
               <span style={{ opacity: 0.7 }}>우측</span><span>터치 둘러보기</span>

@@ -1,13 +1,7 @@
 import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-
-let audioCtx: AudioContext | null = null;
-
-export function getSharedAudioContext() {
-  if (!audioCtx) audioCtx = new AudioContext();
-  return audioCtx;
-}
+import { getSharedAudioContext } from '../utils/audioContext';
 
 function playFootstep() {
   try {
@@ -45,8 +39,6 @@ export function useFootsteps() {
   const STEP_INTERVAL = 2.2; // meters per step
 
   useFrame(() => {
-    const dist = camera.position.distanceTo(lastPos.current);
-
     // Only count horizontal movement
     const dx = camera.position.x - lastPos.current.x;
     const dz = camera.position.z - lastPos.current.z;

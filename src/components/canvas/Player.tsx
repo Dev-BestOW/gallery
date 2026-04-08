@@ -7,11 +7,11 @@ import { PointerLockControls } from '@react-three/drei';
 import { usePlayerControls } from '../../hooks/usePlayerControls';
 import { PLAYER } from '../../constants/gallery';
 import { useGalleryStore } from '../../stores/useGalleryStore';
-import { joystickState } from '../ui/MobileControls';
+import { joystickState } from '../../utils/joystickRef';
+import { checkIsMobile } from '../../hooks/useIsMobile';
 
 export default function Player() {
   const rigidBodyRef = useRef<RapierRigidBody>(null);
-  const controlsRef = useRef<any>(null);
   const { camera } = useThree();
   const keys = usePlayerControls();
   const isLocked = useGalleryStore((s) => s.isLocked);
@@ -24,9 +24,7 @@ export default function Player() {
   const sideVector = useRef(new THREE.Vector3());
   const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
 
-  const isMobile = useRef(
-    'ontouchstart' in window || navigator.maxTouchPoints > 0
-  );
+  const isMobile = useRef(checkIsMobile());
 
   // Mobile look: listen for custom event from MobileControls
   useEffect(() => {
@@ -95,7 +93,6 @@ export default function Player() {
       </RigidBody>
       {!isMobile.current && (
         <PointerLockControls
-          ref={controlsRef}
           onLock={() => setIsPointerLocked(true)}
           onUnlock={() => setIsPointerLocked(false)}
         />

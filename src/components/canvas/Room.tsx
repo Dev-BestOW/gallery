@@ -19,10 +19,12 @@ interface RoomProps {
   theme?: Theme;
 }
 
+type WallTextures = { normalMap: THREE.Texture; roughnessMap: THREE.Texture };
+
 interface WallSegmentProps {
   position: [number, number, number];
   size: [number, number, number];
-  color?: string;
+  wallTex: WallTextures;
 }
 
 /* ── Shared texture hooks ── */
@@ -107,8 +109,7 @@ function FloorBorder({ w, d, wallT, doorways }: { w: number; d: number; wallT: n
 }
 
 /* ── Wall Segment (collision + visual) ── */
-function WallSegment({ position, size }: WallSegmentProps) {
-  const wallTex = useWallTextures();
+function WallSegment({ position, size, wallTex }: WallSegmentProps) {
   return (
     <RigidBody type="fixed" colliders="cuboid">
       <mesh position={position} receiveShadow>
@@ -345,7 +346,7 @@ function CrownMolding({ w, d, h, wallT, doorways }: { w: number; d: number; h: n
 }
 
 /* ── Ceiling Light Rail (천장 조명 레일) ── */
-function CeilingLightRail({ w, d, h }: { w: number; d: number; h: number }) {
+function CeilingLightRail({ d, h }: { w: number; d: number; h: number }) {
   const railH = 0.05;
   const railW = 0.06;
   const fixtureR = 0.06;
@@ -392,6 +393,7 @@ function WallWithDoorway({
   doorwayWidth,
   doorwayHeight,
   rotation,
+  wallTex,
 }: {
   wallPosition: [number, number, number];
   wallWidth: number;
@@ -400,6 +402,7 @@ function WallWithDoorway({
   doorwayWidth: number;
   doorwayHeight: number;
   rotation?: [number, number, number];
+  wallTex: WallTextures;
 }) {
   const sideWidth = (wallWidth - doorwayWidth) / 2;
   const topHeight = height - doorwayHeight;
@@ -416,7 +419,7 @@ function WallWithDoorway({
   return (
     <group position={wallPosition} rotation={rotation}>
       {segments.map((seg, i) => (
-        <WallSegment key={i} position={seg.pos} size={seg.size} />
+        <WallSegment key={i} position={seg.pos} size={seg.size} wallTex={wallTex} />
       ))}
       <DoorFrame
         doorwayWidth={doorwayWidth}
@@ -442,6 +445,9 @@ export default function Room({
   const hasDoor = (dir: Direction) => doorways.includes(dir);
 
   const accentColor = theme ? COLORS.wingColors[theme] : COLORS.wall;
+
+  // 텍스처를 Room 레벨에서 한 번만 로드
+  const wallTex = useWallTextures();
 
   return (
     <group position={position}>
@@ -472,9 +478,10 @@ export default function Room({
           wallPosition={[0, h / 2, -d / 2]}
           wallWidth={w} height={h} thickness={t}
           doorwayWidth={doorW} doorwayHeight={doorH}
+          wallTex={wallTex}
         />
       ) : (
-        <WallSegment position={[0, h / 2, -d / 2]} size={[w, h, t]} />
+        <WallSegment position={[0, h / 2, -d / 2]} size={[w, h, t]} wallTex={wallTex} />
       )}
 
       {/* South wall */}
@@ -483,9 +490,10 @@ export default function Room({
           wallPosition={[0, h / 2, d / 2]}
           wallWidth={w} height={h} thickness={t}
           doorwayWidth={doorW} doorwayHeight={doorH}
+          wallTex={wallTex}
         />
       ) : (
-        <WallSegment position={[0, h / 2, d / 2]} size={[w, h, t]} />
+        <WallSegment position={[0, h / 2, d / 2]} size={[w, h, t]} wallTex={wallTex} />
       )}
 
       {/* East wall */}
@@ -495,9 +503,10 @@ export default function Room({
           wallWidth={d} height={h} thickness={t}
           doorwayWidth={doorW} doorwayHeight={doorH}
           rotation={[0, Math.PI / 2, 0]}
+          wallTex={wallTex}
         />
       ) : (
-        <WallSegment position={[w / 2, h / 2, 0]} size={[t, h, d]} />
+        <WallSegment position={[w / 2, h / 2, 0]} size={[t, h, d]} wallTex={wallTex} />
       )}
 
       {/* West wall */}
@@ -507,9 +516,10 @@ export default function Room({
           wallWidth={d} height={h} thickness={t}
           doorwayWidth={doorW} doorwayHeight={doorH}
           rotation={[0, Math.PI / 2, 0]}
+          wallTex={wallTex}
         />
       ) : (
-        <WallSegment position={[-w / 2, h / 2, 0]} size={[t, h, d]} />
+        <WallSegment position={[-w / 2, h / 2, 0]} size={[t, h, d]} wallTex={wallTex} />
       )}
     </group>
   );

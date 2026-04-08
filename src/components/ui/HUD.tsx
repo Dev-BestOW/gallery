@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useGalleryStore } from '../../stores/useGalleryStore';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 export default function HUD() {
   const isPointerLocked = useGalleryStore((s) => s.isPointerLocked);
@@ -12,11 +13,10 @@ export default function HUD() {
     if (canvas) canvas.requestPointerLock();
   }, []);
 
+  const isMobile = useIsMobile();
+
   // 입장 전이면 아무것도 표시하지 않음 (WelcomeScreen이 담당)
   if (!hasEntered) return null;
-
-  // 데스크탑: ESC로 포인터 락 해제 시 재입장 안내
-  const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   if (!isMobile && !isPointerLocked && !viewingArtwork) {
     return (
       <div

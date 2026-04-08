@@ -1,14 +1,8 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { useGalleryStore } from '../../stores/useGalleryStore';
+import { joystickState } from '../../utils/joystickRef';
 
-interface JoystickState {
-  x: number;
-  y: number;
-  active: boolean;
-}
-
-// 글로벌로 조이스틱 상태 공유 (useFrame에서 접근)
-export const joystickState: JoystickState = { x: 0, y: 0, active: false };
+export { joystickState };
 
 export default function MobileControls() {
   const viewingArtwork = useGalleryStore((s) => s.viewingArtwork);

@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 
+// 비-훅 컨텍스트용 정적 함수
+export function checkIsMobile() {
+  return (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    window.innerWidth < 768
+  );
+}
+
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(checkIsMobile);
 
   useEffect(() => {
-    const check = () => {
-      setIsMobile(
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.innerWidth < 768
-      );
-    };
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
+    const handleResize = () => setIsMobile(checkIsMobile());
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return isMobile;

@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-import { useMemo } from 'react';
 import { RigidBody } from '@react-three/rapier';
 
 /* ── Pedestal with abstract sculpture ── */

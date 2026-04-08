@@ -3,28 +3,9 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ARTWORK } from '../constants/gallery';
 import { useGalleryStore } from '../stores/useGalleryStore';
+import { registeredArtworks, registerArtwork, unregisterArtwork } from '../utils/artworkRegistry';
+import type { ArtworkPosition } from '../utils/artworkRegistry';
 import type { Artwork } from '../data/portfolio';
-
-interface ArtworkPosition {
-  artwork: Artwork;
-  position: THREE.Vector3;
-}
-
-const registeredArtworks: ArtworkPosition[] = [];
-
-export function registerArtwork(artwork: Artwork, position: THREE.Vector3) {
-  const existing = registeredArtworks.find((a) => a.artwork.id === artwork.id);
-  if (existing) {
-    existing.position.copy(position);
-  } else {
-    registeredArtworks.push({ artwork, position: position.clone() });
-  }
-}
-
-export function unregisterArtwork(id: string) {
-  const idx = registeredArtworks.findIndex((a) => a.artwork.id === id);
-  if (idx !== -1) registeredArtworks.splice(idx, 1);
-}
 
 export function useProximityDetector() {
   const { camera } = useThree();
@@ -36,7 +17,7 @@ export function useProximityDetector() {
     if (viewingArtwork) return;
 
     let closest: ArtworkPosition | null = null;
-    let closestDist = ARTWORK.proximity;
+    let closestDist: number = ARTWORK.proximity;
 
     for (const ap of registeredArtworks) {
       const dist = camera.position.distanceTo(ap.position);

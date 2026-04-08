@@ -1,6 +1,6 @@
 import { useRef, useMemo } from 'react';
 import * as THREE from 'three';
-import { Text, SpotLight, useTexture } from '@react-three/drei';
+import { Text, useTexture } from '@react-three/drei';
 import { COLORS, ARTWORK } from '../../constants/gallery';
 import type { Artwork } from '../../data/portfolio';
 
@@ -47,27 +47,18 @@ export default function ArtFrame({
   const depth = ARTWORK.frameDepth; // 0.05
   const innerDepth = depth * 0.6;
 
-  // SpotLight target position (center of artwork in local space, projected forward)
-  const spotTarget = useMemo(() => {
-    const target = new THREE.Object3D();
-    target.position.set(0, 0, depth / 2 + 0.01);
-    return target;
-  }, [depth]);
-
   return (
     <group ref={groupRef} position={position} rotation={rotation}>
-      {/* === SpotLight illuminating the artwork === */}
-      <primitive object={spotTarget} />
-      <SpotLight
-        position={[0, 1.8, 0.8]}
-        target={spotTarget}
-        angle={0.5}
-        penumbra={0.7}
-        intensity={0.8}
-        distance={5}
-        decay={2}
-        color="#fff8f0"
-      />
+      {/* === Emissive light bar above artwork (SpotLight 대체) === */}
+      <mesh position={[0, h / 2 + outerPad + 0.15, 0.06]}>
+        <boxGeometry args={[w * 0.6, 0.04, 0.04]} />
+        <meshStandardMaterial
+          color="#fff8f0"
+          emissive="#fff8f0"
+          emissiveIntensity={0.8}
+          toneMapped={false}
+        />
+      </mesh>
 
       {/* === Outer Frame (4 sides) === */}
       {/* Top */}

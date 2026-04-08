@@ -47,11 +47,6 @@ interface GalleryState {
 
   isPointerLocked: boolean;
   setIsPointerLocked: (locked: boolean) => void;
-
-  // 카메라 트래킹 (미니맵용)
-  cameraPos: [number, number, number];
-  cameraDir: [number, number, number];
-  setCameraPosDir: (pos: [number, number, number], dir: [number, number, number]) => void;
 }
 
 export const useGalleryStore = create<GalleryState>((set) => ({
@@ -80,8 +75,4 @@ export const useGalleryStore = create<GalleryState>((set) => ({
 
   isPointerLocked: false,
   setIsPointerLocked: (locked) => set({ isPointerLocked: locked }),
-
-  cameraPos: [0, 1.7, 0],
-  cameraDir: [0, 0, -1],
-  setCameraPosDir: (pos, dir) => set({ cameraPos: pos, cameraDir: dir }),
 }));

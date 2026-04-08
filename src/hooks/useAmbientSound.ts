@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useGalleryStore } from '../stores/useGalleryStore';
-import { getSharedAudioContext } from './useFootsteps';
+import { getSharedAudioContext } from '../utils/audioContext';
 
 export function useAmbientSound() {
   const hasEntered = useGalleryStore((s) => s.hasEntered);

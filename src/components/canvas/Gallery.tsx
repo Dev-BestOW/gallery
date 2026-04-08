@@ -5,7 +5,6 @@ import Room from './Room';
 import Lighting from './Lighting';
 import RoomLighting from './RoomLighting';
 import { Sparkles } from '@react-three/drei';
-import { useGalleryStore } from '../../stores/useGalleryStore';
 import Player from './Player';
 import RoomArtworks, { distributeOnWall } from './RoomArtworks';
 import EntranceTitle from './EntranceTitle';
@@ -17,6 +16,8 @@ import { useCameraFocus } from '../../hooks/useCameraFocus';
 import { useFootsteps } from '../../hooks/useFootsteps';
 import { useAmbientSound } from '../../hooks/useAmbientSound';
 import { useDeepLink } from '../../hooks/useDeepLink';
+import { useWingDetector } from '../../hooks/useWingDetector';
+import { cameraRef } from '../../utils/cameraRef';
 import portfolio from '../../data/portfolio';
 
 /*
@@ -32,15 +33,16 @@ import portfolio from '../../data/portfolio';
 
 function CameraTracker() {
   const { camera } = useThree();
-  const setCameraPosDir = useGalleryStore((s) => s.setCameraPosDir);
   const dirVec = useMemo(() => new THREE.Vector3(), []);
 
   useFrame(() => {
     camera.getWorldDirection(dirVec);
-    setCameraPosDir(
-      [camera.position.x, camera.position.y, camera.position.z],
-      [dirVec.x, dirVec.y, dirVec.z],
-    );
+    cameraRef.pos.x = camera.position.x;
+    cameraRef.pos.y = camera.position.y;
+    cameraRef.pos.z = camera.position.z;
+    cameraRef.dir.x = dirVec.x;
+    cameraRef.dir.y = dirVec.y;
+    cameraRef.dir.z = dirVec.z;
   });
   return null;
 }
@@ -51,6 +53,7 @@ function SceneManager() {
   useFootsteps();
   useAmbientSound();
   useDeepLink();
+  useWingDetector();
   return null;
 }
 

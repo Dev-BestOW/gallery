@@ -1,8 +1,6 @@
 import { useGalleryStore } from '../../stores/useGalleryStore';
-import { useEffect, useCallback } from 'react';
-
-const isMobileDevice = () =>
-  'ontouchstart' in window || navigator.maxTouchPoints > 0;
+import { useEffect, useCallback, useRef } from 'react';
+import { checkIsMobile } from '../../hooks/useIsMobile';
 
 export default function ArtworkDetail() {
   const viewingArtwork = useGalleryStore((s) => s.viewingArtwork);
@@ -12,7 +10,7 @@ export default function ArtworkDetail() {
   const closePanel = useCallback(() => {
     setViewingArtwork(null);
     setIsLocked(false);
-    if (!isMobileDevice()) {
+    if (!checkIsMobile()) {
       setTimeout(() => {
         document.querySelector('canvas')?.requestPointerLock();
       }, 50);
@@ -29,10 +27,22 @@ export default function ArtworkDetail() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [viewingArtwork, closePanel]);
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // 모달 열릴 때 포커스 이동
+  useEffect(() => {
+    if (viewingArtwork && dialogRef.current) {
+      dialogRef.current.focus();
+    }
+  }, [viewingArtwork]);
+
   if (!viewingArtwork) return null;
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="artwork-title"
       style={{
         position: 'fixed',
         inset: 0,
@@ -46,6 +56,8 @@ export default function ArtworkDetail() {
       onClick={closePanel}
     >
       <div
+        ref={dialogRef}
+        tabIndex={-1}
         style={{
           maxWidth: 600,
           width: '90%',
@@ -54,6 +66,7 @@ export default function ArtworkDetail() {
           padding: 40,
           cursor: 'default',
           color: '#222',
+          outline: 'none',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -73,7 +86,7 @@ export default function ArtworkDetail() {
           />
         )}
 
-        <h2 style={{ fontSize: '1.5rem', marginBottom: 8, fontWeight: 600 }}>
+        <h2 id="artwork-title" style={{ fontSize: '1.5rem', marginBottom: 8, fontWeight: 600 }}>
           {viewingArtwork.title}
         </h2>
 

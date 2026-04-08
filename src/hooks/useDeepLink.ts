@@ -24,9 +24,13 @@ export function useDeepLink() {
 
   // 섹션 변경 시 URL 해시 업데이트
   useEffect(() => {
+    let prevWing = useGalleryStore.getState().currentWing;
     const unsub = useGalleryStore.subscribe((state) => {
-      if (state.currentWing) {
-        window.history.replaceState(null, '', `#${state.currentWing}`);
+      if (state.currentWing !== prevWing) {
+        prevWing = state.currentWing;
+        if (state.currentWing) {
+          window.history.replaceState(null, '', `#${state.currentWing}`);
+        }
       }
     });
     return unsub;

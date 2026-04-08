@@ -10,15 +10,10 @@ export function useCameraFocus() {
   const cameraTarget = useGalleryStore((s) => s.cameraTarget);
   const isFocusing = useGalleryStore((s) => s.isFocusing);
   const setIsFocusing = useGalleryStore((s) => s.setIsFocusing);
-  const setViewingArtwork = useGalleryStore((s) => s.setViewingArtwork);
 
   const targetPos = useRef(new THREE.Vector3());
   const targetLookAt = useRef(new THREE.Vector3());
-  const pendingArtwork = useRef<any>(null);
-
-  // Store에서 pending artwork를 가져오기 위한 ref
-  const storeRef = useRef(useGalleryStore.getState());
-  storeRef.current = useGalleryStore.getState();
+  const currentLookAt = useRef(new THREE.Vector3());
 
   useFrame((_, delta) => {
     if (!isFocusing || !cameraTarget) return;
@@ -30,11 +25,12 @@ export function useCameraFocus() {
     camera.position.lerp(targetPos.current, LERP_SPEED * delta);
 
     // 카메라가 작품을 바라보도록 lookAt lerp
-    const currentLookAt = new THREE.Vector3(0, 0, -1)
+    currentLookAt.current
+      .set(0, 0, -1)
       .applyQuaternion(camera.quaternion)
       .add(camera.position);
-    currentLookAt.lerp(targetLookAt.current, LERP_SPEED * delta);
-    camera.lookAt(currentLookAt);
+    currentLookAt.current.lerp(targetLookAt.current, LERP_SPEED * delta);
+    camera.lookAt(currentLookAt.current);
 
     // 도착 판정
     const dist = camera.position.distanceTo(targetPos.current);
@@ -44,8 +40,7 @@ export function useCameraFocus() {
       setIsFocusing(false);
 
       // 포커스 완료 후 상세 패널 표시
-      const { viewingArtwork } = storeRef.current;
-      if (viewingArtwork) {
+      if (useGalleryStore.getState().viewingArtwork) {
         document.exitPointerLock();
       }
     }
